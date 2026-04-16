@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>苗栗縣資訊輔導團 · 會議記錄</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'微軟正黑體','Microsoft JhengHei','PingFang TC',Arial,sans-serif;background:#f0f4ff;color:#1e293b;min-height:100vh}
+
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,#1e3a8a,#3730a3,#6d28d9);padding:40px 32px 32px;text-align:center;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 50%,rgba(255,255,255,.08),transparent 50%),radial-gradient(circle at 80% 20%,rgba(255,255,255,.10),transparent 40%)}
+.header-inner{position:relative;z-index:1}
+.header-badge{display:inline-block;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);color:#e0e7ff;font-size:12px;letter-spacing:3px;padding:5px 18px;border-radius:999px;margin-bottom:14px}
+.header h1{color:#fff;font-size:clamp(22px,4vw,40px);font-weight:800;letter-spacing:4px;margin-bottom:8px}
+.header p{color:#c7d2fe;font-size:13px;letter-spacing:2px}
+
+/* ── LAYOUT ── */
+.layout{display:grid;grid-template-columns:300px 1fr;gap:0;max-width:1300px;margin:32px auto;padding:0 24px 60px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}}
+
+/* ── SIDEBAR ── */
+.sidebar{position:sticky;top:24px;height:fit-content}
+.sidebar-title{font-size:11px;font-weight:700;letter-spacing:3px;color:#6366f1;margin-bottom:12px;padding:0 4px}
+.meeting-nav{display:flex;flex-direction:column;gap:8px;margin-right:20px}
+
+.nav-item{background:#fff;border:1px solid #e0e7ff;border-radius:14px;padding:14px 16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.nav-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c,#6366f1);border-radius:4px 0 0 4px;opacity:0;transition:opacity .2s}
+.nav-item:hover{border-color:#a5b4fc;box-shadow:0 4px 16px rgba(99,102,241,.12);transform:translateX(2px)}
+.nav-item.active{border-color:#6366f1;box-shadow:0 4px 20px rgba(99,102,241,.18);background:#fafafe}
+.nav-item.active::before{opacity:1}
+.nav-date{font-size:11px;color:#94a3b8;margin-bottom:4px;letter-spacing:1px}
+.nav-no{display:inline-block;background:var(--c,#6366f1);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;margin-bottom:6px}
+.nav-title{font-size:13px;font-weight:700;color:#334155;line-height:1.4}
+.nav-loc{font-size:11px;color:#94a3b8;margin-top:4px}
+
+.progress-wrap{background:#fff;border:1px solid #e0e7ff;border-radius:14px;padding:16px;margin-right:20px;margin-top:12px}
+.progress-title{font-size:11px;color:#64748b;font-weight:600;margin-bottom:12px;letter-spacing:1px}
+.progress-item{margin-bottom:10px}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;color:#475569;margin-bottom:4px}
+.progress-bar{height:6px;background:#e2e8f0;border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;border-radius:999px;background:var(--c,#6366f1);transition:width .6s ease}
+
+/* ── CONTENT ── */
+.content{background:#fff;border:1px solid #e0e7ff;border-radius:20px;padding:36px 40px;box-shadow:0 2px 16px rgba(99,102,241,.06);min-height:600px}
+@media(max-width:900px){.content{padding:24px;margin-top:16px}}
+
+.meeting-page{display:none}
+.meeting-page.active{display:block}
+
+/* Meeting header */
+.meet-header{border-bottom:2px solid #e0e7ff;padding-bottom:24px;margin-bottom:28px}
+.meet-no{display:inline-block;font-size:11px;font-weight:700;color:#fff;padding:3px 12px;border-radius:999px;margin-bottom:12px;letter-spacing:1px}
+.meet-title{font-size:clamp(18px,2.5vw,26px);font-weight:800;color:#1e293b;margin-bottom:16px;line-height:1.3}
+.meet-meta{display:flex;flex-wrap:wrap;gap:16px}
+.meta-chip{display:flex;align-items:center;gap:6px;font-size:12px;color:#64748b;background:#f8faff;border:1px solid #e0e7ff;padding:6px 12px;border-radius:8px}
+.meta-chip span:first-child{font-size:14px}
+
+/* Section */
+.section{margin-bottom:28px}
+.section-head{font-size:13px;font-weight:800;letter-spacing:2px;color:#4f46e5;margin-bottom:14px;display:flex;align-items:center;gap:8px;padding-bottom:8px;border-bottom:1px solid #e8edff}
+.section-head::after{content:'';flex:1;height:1px}
+
+/* Attendees */
+.attendees{display:flex;flex-wrap:wrap;gap:8px}
+.att-tag{display:inline-flex;align-items:center;gap:5px;background:#f0f4ff;border:1px solid #c7d2fe;color:#3730a3;font-size:12px;font-weight:600;padding:4px 12px;border-radius:999px}
+.att-role{font-size:10px;color:#6366f1;margin-left:2px;font-weight:400}
+
+/* Agenda */
+.agenda-list{display:flex;flex-direction:column;gap:6px}
+.agenda-item{display:flex;gap:10px;font-size:13px;color:#475569;padding:8px 12px;background:#fafafe;border-radius:8px;border-left:3px solid #a5b4fc}
+.agenda-num{color:#6366f1;font-weight:700;flex-shrink:0}
+
+/* Discussion blocks */
+.discuss-block{background:#f8faff;border:1px solid #e0e7ff;border-radius:14px;padding:20px;margin-bottom:16px}
+.discuss-topic{font-size:14px;font-weight:700;color:#1e293b;margin-bottom:10px;display:flex;align-items:flex-start;gap:8px}
+.topic-icon{font-size:16px;flex-shrink:0}
+.discuss-body{font-size:13px;color:#475569;line-height:1.8}
+.discuss-body p{margin-bottom:8px}
+.discuss-body p:last-child{margin-bottom:0}
+
+/* Problem / Solution */
+.prob-sol{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+@media(max-width:700px){.prob-sol{grid-template-columns:1fr}}
+.prob-box,.sol-box{border-radius:10px;padding:14px}
+.prob-box{background:#fff1f2;border:1px solid #fecdd3}
+.sol-box{background:#f0fdf4;border:1px solid #bbf7d0}
+.box-label{font-size:10px;font-weight:700;letter-spacing:2px;margin-bottom:8px}
+.prob-box .box-label{color:#e11d48}
+.sol-box .box-label{color:#16a34a}
+.box-list{display:flex;flex-direction:column;gap:6px}
+.box-item{font-size:12px;color:#475569;display:flex;gap:6px;line-height:1.6}
+.prob-box .box-item::before{content:'⚠️';flex-shrink:0}
+.sol-box .box-item::before{content:'✅';flex-shrink:0}
+
+/* Resolution */
+.resolution-list{display:flex;flex-direction:column;gap:8px}
+.resolution-item{display:flex;gap:10px;background:#ede9fe;border-radius:10px;padding:12px 16px;font-size:13px;color:#3730a3}
+.res-num{background:#6366f1;color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.res-text{line-height:1.6}
+.res-owner{font-size:11px;color:#7c3aed;margin-top:2px;font-weight:600}
+
+/* Action items */
+.action-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px}
+.action-table th{background:#4f46e5;color:#fff;padding:10px 14px;text-align:left;font-weight:600;letter-spacing:1px}
+.action-table th:first-child{border-radius:10px 0 0 0}
+.action-table th:last-child{border-radius:0 10px 0 0}
+.action-table td{padding:10px 14px;border-bottom:1px solid #e8edff;color:#475569;vertical-align:top}
+.action-table tr:last-child td{border-bottom:none}
+.action-table tr:hover td{background:#fafafe}
+.status-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px}
+.status-done{background:#dcfce7;color:#16a34a}
+.status-ing{background:#fef3c7;color:#d97706}
+.status-todo{background:#f0f4ff;color:#4f46e5}
+
+/* Next link */
+.next-banner{background:linear-gradient(90deg,#6366f1,#8b5cf6);border-radius:14px;padding:16px 20px;margin-top:28px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:opacity .2s}
+.next-banner:hover{opacity:.88}
+.next-text{color:#fff;font-size:13px}
+.next-text strong{display:block;font-size:15px;margin-top:2px}
+.next-arrow{color:#fff;font-size:22px}
+
+/* Print */
+@media print{
+  .sidebar,.nav-item,.progress-wrap{display:none}
+  .layout{grid-template-columns:1fr;padding:0}
+  .meeting-page{display:block !important;page-break-after:always}
+  .content{box-shadow:none;border:none;padding:0}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-badge">苗栗縣 · 資訊輔導團</div>
+    <h1>會議記錄</h1>
+    <p>114–115學年度 · 科技領域推動策略研討</p>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- ── SIDEBAR ── -->
+  <div class="sidebar">
+    <div class="sidebar-title">📋 會議列表</div>
+    <div class="meeting-nav">
+
+      <div class="nav-item active" style="--c:#6366f1" onclick="showMeeting(1)">
+        <div class="nav-date">114.09.09</div>
+        <div class="nav-no" style="background:#6366f1">第一次</div>
+        <div class="nav-title">現況盤點與六大策略框架確立</div>
+        <div class="nav-loc">📍 山佳國小</div>
+      </div>
+
+      <div class="nav-item" style="--c:#0891b2" onclick="showMeeting(2)">
+        <div class="nav-date">114.10.14</div>
+        <div class="nav-no" style="background:#0891b2">第二次</div>
+        <div class="nav-title">偏鄉困境與數位平權策略深化</div>
+        <div class="nav-loc">📍 大坪分校</div>
+      </div>
+
+      <div class="nav-item" style="--c:#059669" onclick="showMeeting(3)">
+        <div class="nav-date">114.12.02</div>
+        <div class="nav-no" style="background:#059669">第三次</div>
+        <div class="nav-title">AI課程模組與平台資源整合</div>
+        <div class="nav-loc">📍 啟文國小</div>
+      </div>
+
+      <div class="nav-item" style="--c:#d97706" onclick="showMeeting(4)">
+        <div class="nav-date">115.01.13</div>
+        <div class="nav-no" style="background:#d97706">第四次</div>
+        <div class="nav-title">數據治理與校長科技領導支援</div>
+        <div class="nav-loc">📍 苗栗縣國教輔導團</div>
+      </div>
+
+      <div class="nav-item" style="--c:#7c3aed" onclick="showMeeting(5)">
+        <div class="nav-date">115.03.03</div>
+        <div class="nav-no" style="background:#7c3aed">第五次</div>
+        <div class="nav-title">成果評估與下學期行動計畫</div>
+        <div class="nav-loc">📍 山佳國小</div>
+      </div>
+
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-wrap">
+      <div class="progress-title">六大策略推動進度</div>
+      <div class="progress-item">
+        <div class="progress-label"><span>① AI教育推動</span><span>65%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:65%;--c:#6366f1"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-label"><span>② 教師增能</span><span>80%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:80%;--c:#0891b2"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-label"><span>③ 課程與教學</span><span>55%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:55%;--c:#059669"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-label"><span>④ 平台與資源</span><span>70%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:70%;--c:#d97706"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-label"><span>⑤ 數位平權</span><span>45%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:45%;--c:#e11d48"></div></div>
+      </div>
+      <div class="progress-item">
+        <div class="progress-label"><span>⑥ 數據治理</span><span>40%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:40%;--c:#7c3aed"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CONTENT ── -->
+  <div class="content">
+
+    <!-- ══════ 第一次會議 ══════ -->
+    <div class="meeting-page active" id="meeting-1">
+      <div class="meet-header">
+        <div class="meet-no" style="background:#6366f1">第一次會議</div>
+        <div class="meet-title">苗栗縣資訊教育現況盤點與六大策略框架確立</div>
+        <div class="meet-meta">
+          <div class="meta-chip"><span>📅</span>民國 114 年 9 月 9 日（星期二）</div>
+          <div class="meta-chip"><span>🕐</span>下午 2:00 – 5:00</div>
+          <div class="meta-chip"><span>📍</span>苗栗縣苑裡鎮山佳國小 圖書館</div>
+          <div class="meta-chip"><span>👥</span>出席 14 人</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">👥 出席人員</div>
+        <div class="attendees">
+          <div class="att-tag">林信全<span class="att-role">召集人</span></div>
+          <div class="att-tag">林在營<span class="att-role">副召集人</span></div>
+          <div class="att-tag">林國芳</div><div class="att-tag">張傳源</div>
+          <div class="att-tag">陳正浩</div><div class="att-tag">謝志國</div>
+          <div class="att-tag">陳怡君</div><div class="att-tag">曾禎祥</div>
+          <div class="att-tag">莫順翔</div><div class="att-tag">范運平</div>
+          <div class="att-tag">吳俊秀</div><div class="att-tag">李銘華</div>
+          <div class="att-tag">洪及仁</div><div class="att-tag">呂祥羲</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">📌 議程</div>
+        <div class="agenda-list">
+          <div class="agenda-item"><span class="agenda-num">一、</span>114學年度輔導計畫說明及工作分工</div>
+          <div class="agenda-item"><span class="agenda-num">二、</span>苗栗縣資訊教育現況盤點（問題盤點與數據彙整）</div>
+          <div class="agenda-item"><span class="agenda-num">三、</span>六大策略框架研討與初步確認</div>
+          <div class="agenda-item"><span class="agenda-num">四、</span>各組策略負責人討論與任務分配</div>
+          <div class="agenda-item"><span class="agenda-num">五、</span>提案與臨時動議</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">💬 討論摘要</div>
+
+        <div class="discuss-block">
+          <div class="discuss-topic"><span class="topic-icon">📊</span>一、苗栗縣資訊教育現況盤點</div>
+          <div class="discuss-body">
+            <p>召集人林信全說明，114學年度輔導重點聚焦於 AI 教育落地推動。本次會議首要任務為釐清苗栗縣國中小目前面臨的資訊教育困境，作為六大策略制訂的依據。</p>
+            <p>各委員依服務學校分區回報現況，歸納出以下主要困境：</p>
+          </div>
+          <div class="prob-sol">
+            <div class="prob-box">
+              <div class="box-label">📌 現況困境</div>
+              <div class="box-list">
+                <div class="box-item">全縣超過 40% 學校資訊專科教師不足，兼任情形嚴重</div>
+                <div class="box-item">偏鄉學校設備老舊，Wi-Fi 覆蓋率低，無法有效運用 AI 工具</div>
+                <div class="box-item">教師對 AI 工具認知落差大，初階教師甚至不知從何入門</div>
+                <div class="box-item">無系統性課程地圖，各校各自為政，橫向連結薄弱</div>
+                <div class="box-item">家長數位素養不足，對學校推動 AI 教育存有疑慮</div>
+              </div>
+            </div>
+            <div class="sol-box">
+              <div class="box-label">💡 對應策略方向</div>
+              <div class="box-list">
+                <div class="box-item">建立縣本「AI教育推動中心」，統籌資源分配與師訓規劃</div>
+                <div class="box-item">優先補足偏鄉網路與設備，落實數位平權</div>
+                <div class="box-item">建立分級培訓制度，從初階到專家循序漸進</div>
+                <div class="box-item">發展跨校共用課程模組，減少重複開發成本</div>
+                <div class="box-item">納入家長宣導場次，建立教育共同體</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="discuss-block">
+          <div class="discuss-topic"><span class="topic-icon">🗺️</span>二、六大策略框架研討</div>
+          <div class="discuss-body">
+            <p>張傳源委員提出六大策略架構草案，經全體委員逐項討論後，確認本學年度推動框架如下：</p>
+            <p>① <strong>AI教育推動策略</strong>——建立AI教育推動中心、發展國小版AI課程模組；② <strong>教師增能策略</strong>——分級培訓（初階→進階→專家）、AI教學應用實作課程；③ <strong>課程與教學策略</strong>——科技融入領域課程、跨域課程（AI × STEAM）；④ <strong>平台與資源策略</strong>——整合教育雲＋因材網＋AI工具、建立縣本數位教材庫；⑤ <strong>數位平權策略</strong>——偏鄉優先資源配置、弱勢學生學習支持；⑥ <strong>數據治理策略</strong>——建立學習數據儀表板、支援校長決策。</p>
+            <p>各委員對策略分工達成初步共識，後續將依專長認領負責組別，並於第二次會議前完成細部規劃。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">✅ 決議事項</div>
+        <div class="resolution-list">
+          <div class="resolution-item">
+            <div class="res-num">1</div>
+            <div><div class="res-text">確認六大策略框架作為 114–115 學年度輔導依據，各委員依專長認領策略主責組別，並於 114.10.07 前回傳認領表。</div><div class="res-owner">主責：全體委員 / 林信全彙整</div></div>
+          </div>
+          <div class="resolution-item">
+            <div class="res-num">2</div>
+            <div><div class="res-text">辦理全縣資訊教育現況調查（問卷設計由張傳源負責），於 114.09.30 前發送各校，作為數位平權資源配置依據。</div><div class="res-owner">主責：張傳源</div></div>
+          </div>
+          <div class="resolution-item">
+            <div class="res-num">3</div>
+            <div><div class="res-text">第二次會議聚焦偏鄉困境與數位平權策略，並赴大坪分校實地參訪，直接了解偏鄉現場需求。</div><div class="res-owner">主責：林在營安排場地</div></div>
+          </div>
+          <div class="resolution-item">
+            <div class="res-num">4</div>
+            <div><div class="res-text">AI教育推動中心籌設計畫書由林信全、林在營共同起草，於第二次會議前提出初稿。</div><div class="res-owner">主責：林信全、林在營</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">📋 工作追蹤</div>
+        <table class="action-table">
+          <thead><tr><th>工作項目</th><th>負責人</th><th>期限</th><th>狀態</th></tr></thead>
+          <tbody>
+            <tr><td>策略認領表設計與發送</td><td>林信全</td><td>09.15</td><td><span class="status-badge status-done">完成</span></td></tr>
+            <tr><td>全縣現況調查問卷設計</td><td>張傳源</td><td>09.25</td><td><span class="status-badge status-done">完成</span></td></tr>
+            <tr><td>問卷發送各校</td><td>張傳源</td><td>09.30</td><td><span class="status-badge status-done">完成</span></td></tr>
+            <tr><td>AI推動中心計畫書初稿</td><td>林信全、林在營</td><td>10.10</td><td><span class="status-badge status-done">完成</span></td></tr>
+            <tr><td>第二次會議場地安排（大坪分校）</td><td>林在營</td><td>10.07</td><td><span class="status-badge status-done">完成</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="next-banner" onclick="showMeeting(2)">
+        <div class="next-text">下一次會議<strong>第二次：偏鄉困境與數位平權策略深化 → 114.10.14 大坪分校</strong></div>
+        <div class="next-arrow">→</div>
+      </div>
+    </div>
+
+    <!-- ══════ 第二次會議 ══════ -->
+    <div class="meeting-page" id="meeting-2">
+      <div class="meet-header">
+        <div class="meet-no" style="background:#0891b2">第二次會議</div>
+        <div class="meet-title">偏鄉困境深度調查與數位平權策略深化</div>
+        <div class="meet-meta">
+          <div class="meta-chip"><span>📅</span>民國 114 年 10 月 14 日（星期二）</div>
+          <div class="meta-chip"><span>🕐</span>下午 2:00 – 5:00</div>
+          <div class="meta-chip"><span>📍</span>苗栗縣泰安鄉大坪分校 辦公室</div>
+          <div class="meta-chip"><span>👥</span>出席 12 人</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">👥 出席人員</div>
+        <div class="attendees">
+          <div class="att-tag">林信全<span class="att-role">召集人</span></div>
+          <div class="att-tag">林在營<span class="att-role">副召集人</span></div>
+          <div class="att-tag">張傳源</div><div class="att-tag">陳正浩</div>
+          <div class="att-tag">謝志國</div><div class="att-tag">陳怡君</div>
+          <div class="att-tag">莫順翔</div><div class="att-tag">范運平</div>
+          <div class="att-tag">吳俊秀</div><div class="att-tag">洪及仁</div>
+          <div class="att-tag">呂祥羲</div>
+          <div class="att-tag">林國芳<span class="att-role">請假</span></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">📌 議程</div>
+        <div class="agenda-list">
+          <div class="agenda-item"><span class="agenda-num">一、</span>上次會議決議事項進度報告</div>
+          <div class="agenda-item"><span class="agenda-num">二、</span>大坪分校校長簡報：偏鄉數位教育現場實況</div>
+          <div class="agenda-item"><span class="agenda-num">三、</span>全縣資訊教育現況調查問卷結果分析</div>
+          <div class="agenda-item"><span class="agenda-num">四、</span>數位平權策略（第五策略）細部規劃</div>
+          <div class="agenda-item"><span class="agenda-num">五、</span>教師增能策略（第二策略）分級培訓架構討論</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">💬 討論摘要</div>
+
+        <div class="discuss-block">
+          <div class="discuss-topic"><span class="topic-icon">🏫</span>一、偏鄉現場實況——大坪分校參訪紀要</div>
+          <div class="discuss-body">
+            <p>大坪分校位於泰安鄉山區，全校學生 18 人，教師 4 人（含校長），為苗栗縣典型的偏遠小規模學校。校長說明，學校雖已申請教育部補助更新設備，但受限於山區網路頻寬，實際可用頻寬不足 10Mbps，線上 AI 工具（如 ChatGPT、Copilot）幾乎無法流暢使用。</p>
+            <p>此外，學校教師身兼多職（行政＋教學），幾乎無餘力參加縣外研習，數位增能嚴重落後。學生家庭多為原住民族或新住民，家長數位素養偏低，無法在家協助孩子延續數位學習。</p>
+          </div>
+          <div class="prob-sol">
+            <div class="prob-box">
+              <div class="box-label">📌 偏鄉困境</div>
+              <div class="box-list">
+                <div class="box-item">網路頻寬嚴重不足，AI 工具無法有效運作</div>
+                <div class="box-item">教師兼職過重，缺乏增能時間與動力</div>
+                <div class="box-item">設備申請流程繁複，到位時間延遲</div>
+                <div class="box-item">學生缺乏家庭數位學習支持環境</div>
+                <div class="box-item">縣內偏鄉校際資源無法共享共用</div>
+              </div>
+            </div>
+            <div class="sol-box">
+              <div class="box-label">💡 對應方案</div>
+              <div class="box-list">
+                <div class="box-item">爭取 5G 示範學校計畫，優先補強偏鄉頻寬</div>
+                <div class="box-item">設計「到校服務型」研習，輔導員直接進駐偏鄉</div>
+                <div class="box-item">建立偏鄉設備借用機制，彈性調配資源</div>
+                <div class="box-item">辦理偏鄉家長數位素養講座，納入家長宣導計畫</div>
+                <div class="box-item">成立偏鄉校際數位學習社群，線上共備共享</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="discuss-block">
+          <div class="discuss-topic"><span class="topic-icon">📊</span>二、全縣現況調查問卷結果摘要</div>
+          <div class="discuss-body">
+            <p>張傳源委員報告問卷結果（回收率 73%，共 89 校回應）：</p>
+            <p>• 有 AI 相關研習需求的教師占 <strong>86%</strong>，但實際參與過 AI 研習者僅 <strong>31%</strong>，需求供給嚴重落差。</p>
+            <p>• 設備滿意度最低的學校集中於泰安、南庄、獅潭等山區鄉鎮，與現場參訪所見吻合。</p>
+            <p>• 教師自評 AI 應用能力「初階」以下者占 <strong>68%</strong>，顯示分級培訓刻不容緩。</p>
+            <p>問卷數據將作為資源配置優先序排定依據，並提交縣府教育處參考。</p>
+          </div>
+        </div>
+
+        <div class="discuss-block">
+          <div class="discuss-topic"><span class="topic-icon">📚</span>三、教師分級培訓架構討論</div>
+          <div class="discuss-body">
+            <p>陳怡君委員提出三級培訓架構：<strong>初階</strong>（AI 工具認識與基本操作，6 小時）→ <strong>進階</strong>（AI 融入教學設計，12 小時）→ <strong>專家</strong>（AI 課程開發與輔導帶領，18 小時＋實作）。</p>
+            <p>討論重點：偏鄉教師因時間限制，難以參加連續性實體研習，建議初階課程設計為「模組化線上＋到校實作」複合模式，降低參與門檻。</p>
+            <p>謝志國委員補充，應將分級培訓與數位學習 A1–B5 證書制度銜接，讓教師同步累積認證，提升參與動力。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">✅ 決議事項</div>
+        <div class="resolution-list">
+          <div class="resolution-item">
+            <div class="res-num">1</div>
+            <div><div class="res-text">確認「偏鄉優先」為數位平權策略核心原則，資源配置優先序：泰安→南庄→獅潭→其他山區鄉鎮。由林在營負責協調設備借調機制。</div><div class="res-owner">主責：林在營</div></div>
+          </div>
+          <div class="resolution-item">
+            <div class="res-num">2</div>
+            <div><div class="res-text">確認三級培訓架構，初階課程設計採「線上模組＋到校實作」複合模式。陳怡君、謝志國負責初階課程設計，於 114.11.15 前完成課程綱要。</div><div class="res-owner">主責：陳怡君、謝志國</div></div>
+          </div>
+          <div class="resolution-item">
+            <div class="res-num">3</div>
+            <div><div class="res-text">張傳源整理問卷統計報告，提報縣府教育處，爭取 5G 計畫偏鄉頻寬補強專案。</div><div class="res-owner">主責：張傳源</div></div>
+          </div>
+          <div class="resolution-item">
+            <div class="res-num">4</div>
+            <div><div class="res-text">第三次會議聚焦 AI 課程模組開發與平台資源整合（策略①③④），地點安排於啟文國小。</div><div class="res-owner">主責：林信全</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">📋 工作追蹤</div>
+        <table class="action-table">
+          <thead><tr><th>工作項目</th><th>負責人</th><th>期限</th><th>狀態</th></tr></thead>
+          <tbody>
+            <tr><td>問卷統計報告提交教育處</td><td>張傳源</td><td>10.31</td><td><span class="status-badge status-done">完成</span></td></tr>
+            <tr><td>偏鄉設備借調機制草案</td><td>林在營</td><td>11.15</td><td><span class="status-badge status-done">完成</span></td></tr>
+            <tr><td>初階 AI 課程綱要設計</td><td>陳怡君、謝志國</td><td>11.15</td><td><span class="status-badge status-done">完成</span></td></tr>
+            <tr><td>5G 偏鄉補強計畫申請文件</td><td>張傳源、林信全</td><td>11.01</td><td><span class="status-badge status-done">完成</span></td></tr>
+            <tr><td>偏鄉校際學習社群成立</td><td>洪及仁</td><td>11.30</td><td><span class="status-badge status-ing">進行中</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="next-banner" onclick="showMeeting(3)">
+        <div class="next-text">下一次會議<strong>第三次：AI課程模組與平台資源整合 → 114.12.02 啟文國小</strong></div>
+        <div class="next-arrow">→</div>
+      </div>
+    </div>
+
+    <!-- ══════ 第三次會議 ══════ -->
+    <div class="meeting-page" id="meeting-3">
+      <div class="meet-header">
+        <div class="meet-no" style="background:#059669">第三次會議</div>
+        <div class="meet-title">AI課程模組開發審查與教育平台資源整合規劃</div>
+        <div class="meet-meta">
+          <div class="meta-chip"><span>📅</span>民國 114 年 12 月 2 日（星期二）</div>
+          <div class="meta-chip"><span>🕐</span>下午 2:00 – 5:30</div>
+          <div class="meta-chip"><span>📍</span>苗栗縣頭屋鄉啟文國小 會議室</div>
+          <div class="meta-chip"><span>👥</span>出席 13 人</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">👥 出席人員</div>
+        <div class="attendees">
+          <div class="att-tag">林信全<span class="att-role">召集人</span></div>
+          <div class="att-tag">林在營<span class="att-role">副召集人</span></div>
+          <div class="att-tag">林國芳</div><div class="att-tag">張傳源</div>
+          <div class="att-tag">陳正浩</div><div class="att-tag">謝志國</div>
+          <div class="att-tag">陳怡君</div><div class="att-tag">曾禎祥</div>
+          <div class="att-tag">莫順翔</div><div class="att-tag">范運平</div>
+          <div class="att-tag">李銘華</div><div class="att-tag">呂祥羲</div>
+          <div class="att-tag">龔任俠</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">📌 議程</div>
+        <div class="agenda-list">
+          <div class="agenda-item"><span class="agenda-num">一、</span>上次會議追蹤事項報告</div>
+          <div class="agenda-item"><span class="agenda-num">二、</span>AI課程模組初稿審查（國小版）</div>
+          <div class="agenda-item"><span class="agenda-num">三、</span>科技融入領域課程案例分享</div>
+          <div class="agenda-item"><span class="agenda-num">四、</span>教育雲＋因材網＋AI工具整合規劃</div>
+          <div class="agenda-item"><span class="agenda-num">五、</span>縣本數位教材庫建置討論</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">💬 討論摘要</div>
+
+        <div class="discuss-block">
+          <div class="discuss-topic"><span class="topic-icon">🤖</span>一、AI課程模組初稿審查</div>
+          <div class="discuss-body">
+            <p>陳怡君委員發表「國小 AI 課程模組」初稿，共規劃六個主題單元：① AI 是什麼？（生活中的 AI）→ ② AI 如何學習？（機器學習概念）→ ③ 用 AI 創作（生成式工具體驗）→ ④ AI 幫我寫作業？（倫理思辨）→ ⑤ AI 與我的未來（職涯與社會）→ ⑥ 我來設計 AI 工具（簡單應用實作）。</p>
+            <p>委員回饋重點：龔任俠強調應加入「科技領域標準本位評量」對應架構，確保課程與課綱連結；張傳源建議第③④單元加強提示詞（Prompt）設計能力，以實用性為主軸；范運平建議第⑥單元引入 STEAM 跨域設計，結合科學探究與工程思維。</p>
+          </div>
+          <div class="prob-sol">
+            <div class="prob-box">
+              <div class="box-label">📌 課程推動困境</div>
+              <div class="box-list">
+                <div class="box-item">教師對 AI 倫理議題不熟悉，教學時不知如何引導討論</div>
+                <div class="box-item">部分學校設備不足以執行實作單元（偏鄉連網速度過慢）</div>
+                <div class="box-item">課程時數與既有科技領域課程重疊，排課困難</div>
+                <div class="box-item">缺乏配套評量工具，教師難以評估學生學習成效</div>
+              </div>
+            </div>
+            <div class="sol-box">
+              <div class="box-label">💡 解決方案</div>
+              <div class="box-list">
+                <div class="box-item">研發 AI 倫理教學指引手冊，附案例討論題組</div>
+                <div class="box-item">設計「離線版」實作活動（不依賴高速網路）供偏鄉使用</div>
+                <div class="box-item">與課綱科技領域整合，模組化嵌入，不額外增加課時</div>
+                <div class="box-item">發展標準本位評量題庫，對應課程六大單元</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="discuss-block">
+          <div class="discuss-topic"><span class="topic-icon">🔗</span>二、教育雲＋因材網＋AI工具整合規劃</div>
+          <div class="discuss-body">
+            <p>林國芳委員提出平台整合構想：以「教育雲」作為基底帳號系統，整合「因材網」的自適應學習數據，再外掛 AI 輔助工具（如 Copilot、Gemini、LoiLoNote），形成「一帳號多平台」的教師使用體驗。</p>
+            <p>曾禎祥委員指出，目前最大障礙在於帳號互通問題——各平台登入方式不一致，教師需記憶多組帳密，導致工具採用率偏低。</p>
+            <p>建議推動「縣本 Google Workspace 整合」，以學校 Google 帳號作為統一入口，串接各平台 SSO（單一登入），並建立教師使用手冊與快速入門影片。</p>
+          </div>
+        </div>
+
+        <div class="discuss-block">
+          <div class="discuss-topic"><span class="topic-icon">📦</span>三、縣本數位教材庫建置討論</div>
+          <div class="discuss-body">
+            <p>莫順翔委員提議建立「苗栗縣科技教育數位教材庫」，由輔導團委員共同貢獻教學資源，開放全縣教師免費使用，避免重複開發。</p>
+            <p>討論決定教材庫以 Google Sites 或 GitHub Pages 為技術平台，分類架構依「學習階段（低中高年級/國中）× 主題（六大模組）」建立索引，並設置評分與評語機制，促進教師社群回饋。</p>
+            <p>初期目標：學期末前建置完成並上架至少 30 份教學資源（含教案、簡報、學習單）。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">✅ 決議事項</div>
+        <div class="resolution-list">
+          <div class="resolution-item">
+            <div class="res-num">1</div>
+            <div><div class="res-text">AI 課程模組依審查意見修訂，新增標準本位評量架構與 STEAM 跨域元素，並設計「離線版」實作活動。修訂版於 115.01.05 前完成。</div><div class="res-owner">主責：陳怡君、龔任俠、范運平</div></div>
+          </div>
+          <div class="resolution-item">
+            <div class="res-num">2</div>
+            <div><div class="res-text">推動縣本 Google Workspace 整合，由曾禎祥與林信全共同向縣府教育處提案，目標 115 學年度上學期完成部署。</div><div class="res-owner">主責：曾禎祥、林信全</div></div>
+          </div>
+          <div class="resolution-item">
+            <div class="res-num">3</div>
+            <div><div class="res-text">縣本數位教材庫由莫順翔負責技術建置，各委員於 115.01.10 前各貢獻至少 2 份教材上架，學期末目標 30 份。</div><div class="res-owner">主責：莫順翔（技術）/全體委員（內容）</div></div>
+          </div>
+          <div class="resolution-item">
+            <div class="res-num">4</div>
+            <div><div class="res-text">第四次會議聚焦數據治理策略與校長科技領導支援，邀請部分學校校長列席，地點安排於國教輔導團辦公室。</div><div class="res-owner">主責：林信全邀請校長</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">📋 工作追蹤</div>
+        <table class="action-table">
+          <thead><tr><th>工作項目</th><th>負責人</th><th>期限</th><th>狀態</th></tr></thead>
+          <tbody>
+            <tr><td>AI 課程模組修訂版</td><td>陳怡君、龔任俠、范運平</td><td>01.05</td><td><span class="status-badge status-done">完成</span></td></tr>
+            <tr><td>Google Workspace 整合提案</td><td>曾禎祥、林信全</td><td>01.10</td><td><span class="status-badge status-done">完成</span></td></tr>
+            <tr><td>數位教材庫平台建置</td><td>莫順翔</td><td>01.10</td><td><span class="status-badge status-done">完成</span></td></tr>
+            <tr><td>各委員上架教材（2份/人）</td><td>全體委員</td><td>01.10</td><td><span class="status-badge status-ing">進行中</span></td></tr>
+            <tr><td>AI 倫理教學指引手冊草稿</td><td>張傳源</td><td>01.15</td><td><span class="status-badge status-ing">進行中</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="next-banner" onclick="showMeeting(4)">
+        <div class="next-text">下一次會議<strong>第四次：數據治理與校長科技領導支援 → 115.01.13 苗栗縣國教輔導團</strong></div>
+        <div class="next-arrow">→</div>
+      </div>
+    </div>
+
+    <!-- ══════ 第四次會議 ══════ -->
+    <div class="meeting-page" id="meeting-4">
+      <div class="meet-header">
+        <div class="meet-no" style="background:#d97706">第四次會議</div>
+        <div class="meet-title">學習數據儀表板建置與校長科技領導能力支援</div>
+        <div class="meet-meta">
+          <div class="meta-chip"><span>📅</span>民國 115 年 1 月 13 日（星期一）</div>
+          <div class="meta-chip"><span>🕐</span>下午 2:00 – 5:00</div>
+          <div class="meta-chip"><span>📍</span>苗栗縣國民教育輔導團 會議室</div>
+          <div class="meta-chip"><span>👥</span>出席 16 人（含列席校長 3 人）</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">👥 出席人員</div>
+        <div class="attendees">
+          <div class="att-tag">林信全<span class="att-role">召集人</span></div>
+          <div class="att-tag">林在營<span class="att-role">副召集人</span></div>
+          <div class="att-tag">林國芳</div><div class="att-tag">張傳源</div>
+          <div class="att-tag">陳正浩</div><div class="att-tag">謝志國</div>
+          <div class="att-tag">陳怡君</div><div class="att-tag">曾禎祥</div>
+          <div class="att-tag">莫順翔</div><div class="att-tag">李銘華</div>
+          <div class="att-tag">吳俊秀</div><div class="att-tag">呂祥羲</div>
+          <div class="att-tag">龔任俠</div>
+          <div class="att-tag">A校校長<span class="att-role">列席</span></div>
+          <div class="att-tag">B校校長<span class="att-role">列席</span></div>
+          <div class="att-tag">C校校長<span class="att-role">列席</span></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">📌 議程</div>
+        <div class="agenda-list">
+          <div class="agenda-item"><span class="agenda-num">一、</span>上次決議追蹤：數位教材庫建置成果報告</div>
+          <div class="agenda-item"><span class="agenda-num">二、</span>學習數據儀表板規劃與設計討論</div>
+          <div class="agenda-item"><span class="agenda-num">三、</span>校長科技領導需求座談（列席校長分享）</div>
+          <div class="agenda-item"><span class="agenda-num">四、</span>AI 治理框架與資料隱私議題討論</div>
+          <div class="agenda-item"><span class="agenda-num">五、</span>上半年推動成果彙整與下學期計畫預覽</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">💬 討論摘要</div>
+
+        <div class="discuss-block">
+          <div class="discuss-topic"><span class="topic-icon">📈</span>一、學習數據儀表板規劃</div>
+          <div class="discuss-body">
+            <p>張傳源委員提出「苗栗縣學習數據儀表板」規劃方案，整合三大數據來源：① 因材網學習歷程數據（作答率、精熟度）；② 教育雲平台使用數據（登入頻率、教材使用量）；③ 學校自行填報的科技融入課堂頻率。</p>
+            <p>儀表板設計分為三個層級：<strong>校長層</strong>——全校整體數位學習概況；<strong>教師層</strong>——班級學習表現與工具使用分析；<strong>學生層</strong>（未來擴充）——個人學習路徑建議。</p>
+            <p>技術選用：以 Google Looker Studio 為主要視覺化工具，串接 Google Sheets 為數據中介，降低建置成本。</p>
+          </div>
+          <div class="prob-sol">
+            <div class="prob-box">
+              <div class="box-label">📌 數據治理困境</div>
+              <div class="box-list">
+                <div class="box-item">各平台數據格式不一，整合技術門檻高</div>
+                <div class="box-item">教師填報意願低，擔心數據被用於考績評量</div>
+                <div class="box-item">學生個資保護問題，數據蒐集範圍不易界定</div>
+                <div class="box-item">校長缺乏數據解讀能力，儀表板難以發揮決策支援功能</div>
+              </div>
+            </div>
+            <div class="sol-box">
+              <div class="box-label">💡 解決策略</div>
+              <div class="box-list">
+                <div class="box-item">採匿名化與聚合化數據呈現，保護個人隱私</div>
+                <div class="box-item">明確宣示數據僅用於教學改善，非考績工具</div>
+                <div class="box-item">設計校長「數據解讀工作坊」，提升數位治理素養</div>
+                <div class="box-item">建立數據蒐集最小化原則，符合 PDPA 精神</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="discuss-block">
+          <div class="discuss-topic"><span class="topic-icon">👨‍💼</span>二、校長科技領導需求座談</div>
+          <div class="discuss-body">
+            <p>三位列席校長依序分享其學校在推動科技教育時面臨的領導困境：</p>
+            <p>• <strong>A 校校長</strong>：教師抗拒使用新工具，認為增加備課負擔，需要行政端提供具體誘因與減壓配套。</p>
+            <p>• <strong>B 校校長</strong>：缺乏統整性的數據工具輔助決策，每次視導都靠直覺與觀察，難以系統性改善。</p>
+            <p>• <strong>C 校校長</strong>（偏鄉）：資源不平等問題最為棘手，同一鄉鎮的不同學校資源差距懸殊，亟需縣府提供更公平的分配機制。</p>
+            <p>輔導團決議將上述需求納入「AI 教育推動中心」服務項目，並規劃校長數位領導增能課程（與國教院合作）。</p>
+          </div>
+        </div>
+
+        <div class="discuss-block">
+          <div class="discuss-topic"><span class="topic-icon">🛡️</span>三、AI 治理框架與資料隱私</div>
+          <div class="discuss-body">
+            <p>龔任俠委員就 AI 教育中的倫理與治理議題進行簡報，強調三個核心原則：<strong>透明性</strong>（師生知道 AI 如何使用其數據）、<strong>公平性</strong>（AI 工具不因族群/城鄉造成歧視）、<strong>問責性</strong>（AI 建議的決策需有人負責）。</p>
+            <p>建議縣府訂定「苗栗縣中小學 AI 教育使用指引」，作為全縣學校使用 AI 工具的規範基礎，並納入家長知情同意機制。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">✅ 決議事項</div>
+        <div class="resolution-list">
+          <div class="resolution-item">
+            <div class="res-num">1</div>
+            <div><div class="res-text">學習數據儀表板 MVP 版本（校長層）由張傳源負責開發，目標 115.02.28 前完成並提供 3 所學校試用。</div><div class="res-owner">主責：張傳源</div></div>
+          </div>
+          <div class="resolution-item">
+            <div class="res-num">2</div>
+            <div><div class="res-text">規劃「校長 AI 科技領導增能工作坊」（半天），結合國教院資源辦理，目標 115.03 月前辦理首場。林信全負責對接國教院。</div><div class="res-owner">主責：林信全</div></div>
+          </div>
+          <div class="resolution-item">
+            <div class="res-num">3</div>
+            <div><div class="res-text">龔任俠起草「苗栗縣中小學 AI 教育使用指引」草案，於 115.02.15 前完成，提交第五次會議審查。</div><div class="res-owner">主責：龔任俠</div></div>
+          </div>
+          <div class="resolution-item">
+            <div class="res-num">4</div>
+            <div><div class="res-text">第五次會議為本學年度最後一次，進行全面成果評估與下學期行動計畫研訂，回到山佳國小舉行。</div><div class="res-owner">主責：林信全</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">📋 工作追蹤</div>
+        <table class="action-table">
+          <thead><tr><th>工作項目</th><th>負責人</th><th>期限</th><th>狀態</th></tr></thead>
+          <tbody>
+            <tr><td>學習數據儀表板 MVP 開發</td><td>張傳源</td><td>02.28</td><td><span class="status-badge status-done">完成</span></td></tr>
+            <tr><td>校長增能工作坊規劃書</td><td>林信全</td><td>02.15</td><td><span class="status-badge status-done">完成</span></td></tr>
+            <tr><td>AI 教育使用指引草案</td><td>龔任俠</td><td>02.15</td><td><span class="status-badge status-done">完成</span></td></tr>
+            <tr><td>數位教材庫 30 份教材目標</td><td>全體委員</td><td>02.28</td><td><span class="status-badge status-ing">進行中</span></td></tr>
+            <tr><td>上半年成果報告彙整</td><td>林在營</td><td>03.01</td><td><span class="status-badge status-todo">待辦</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="next-banner" onclick="showMeeting(5)">
+        <div class="next-text">下一次會議<strong>第五次：成果評估與下學期行動計畫 → 115.03.03 山佳國小</strong></div>
+        <div class="next-arrow">→</div>
+      </div>
+    </div>
+
+    <!-- ══════ 第五次會議 ══════ -->
+    <div class="meeting-page" id="meeting-5">
+      <div class="meet-header">
+        <div class="meet-no" style="background:#7c3aed">第五次會議</div>
+        <div class="meet-title">六大策略推動成果評估與下學期行動計畫研訂</div>
+        <div class="meet-meta">
+          <div class="meta-chip"><span>📅</span>民國 115 年 3 月 3 日（星期一）</div>
+          <div class="meta-chip"><span>🕐</span>下午 2:00 – 5:30</div>
+          <div class="meta-chip"><span>📍</span>苗栗縣苑裡鎮山佳國小 圖書館</div>
+          <div class="meta-chip"><span>👥</span>出席 15 人</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">👥 出席人員</div>
+        <div class="attendees">
+          <div class="att-tag">林信全<span class="att-role">召集人</span></div>
+          <div class="att-tag">林在營<span class="att-role">副召集人</span></div>
+          <div class="att-tag">林國芳</div><div class="att-tag">張傳源</div>
+          <div class="att-tag">陳正浩</div><div class="att-tag">謝志國</div>
+          <div class="att-tag">陳怡君</div><div class="att-tag">曾禎祥</div>
+          <div class="att-tag">莫順翔</div><div class="att-tag">范運平</div>
+          <div class="att-tag">吳俊秀</div><div class="att-tag">李銘華</div>
+          <div class="att-tag">洪及仁</div><div class="att-tag">呂祥羲</div>
+          <div class="att-tag">龔任俠</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">📌 議程</div>
+        <div class="agenda-list">
+          <div class="agenda-item"><span class="agenda-num">一、</span>上次決議事項追蹤與成果發表</div>
+          <div class="agenda-item"><span class="agenda-num">二、</span>六大策略推動成效評估（含數據回顧）</div>
+          <div class="agenda-item"><span class="agenda-num">三、</span>苗栗縣 AI 教育使用指引草案審查</div>
+          <div class="agenda-item"><span class="agenda-num">四、</span>115學年度下學期行動計畫研訂</div>
+          <div class="agenda-item"><span class="agenda-num">五、</span>對外成果發表規劃（研討會/成果展）</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">💬 討論摘要</div>
+
+        <div class="discuss-block">
+          <div class="discuss-topic"><span class="topic-icon">📊</span>一、六大策略推動成效評估</div>
+          <div class="discuss-body">
+            <p>林在營委員彙整上半年推動成果報告，各策略執行摘要如下：</p>
+            <p>• <strong>① AI教育推動</strong>：AI 課程模組完成 6 單元開發，已於 3 所學校試行，回饋整體正向，教師認可度 78%。偏鄉離線版活動完成設計，待下學期推廣。</p>
+            <p>• <strong>② 教師增能</strong>：初階培訓已辦理 14 場，累計服務教師逾 400 人；進階培訓完成 3 場；A1–A3 證書通過率提升 23%。教師 AI 應用自評能力「初階以下」比例從 68% 降至 51%。</p>
+            <p>• <strong>③ 課程與教學</strong>：科技融入教案競賽收到 27 件投稿，優秀教案上架數位教材庫；STEAM 跨域課程試行於 2 所學校，效果待追蹤。</p>
+            <p>• <strong>④ 平台與資源</strong>：數位教材庫上架 38 份教材（超越 30 份目標）；Google Workspace 整合提案已送縣府，待審查中。</p>
+            <p>• <strong>⑤ 數位平權</strong>：偏鄉設備借調機制已運作，服務 6 所偏鄉學校；5G 計畫申請進入審查。偏鄉家長數位素養講座辦理 4 場。</p>
+            <p>• <strong>⑥ 數據治理</strong>：學習數據儀表板 MVP 完成，3 所試用學校校長回饋儀表板「有助於掌握全校學習全貌」。</p>
+          </div>
+        </div>
+
+        <div class="discuss-block">
+          <div class="discuss-topic"><span class="topic-icon">📜</span>二、AI教育使用指引草案審查</div>
+          <div class="discuss-body">
+            <p>龔任俠委員發表「苗栗縣中小學 AI 教育使用指引」草案，共分五章：第一章 目的與適用範圍；第二章 AI 工具使用原則（透明、公平、問責）；第三章 學生使用規範（年齡分級、家長知情）；第四章 教師角色與責任；第五章 資料安全與隱私保護。</p>
+            <p>審查重點討論：陳怡君建議新增「生成式 AI 著作權」相關說明，避免師生誤用 AI 生成內容；張傳源建議第五章補充 PDPA（個資法）對照條文，強化法律依據；林信全裁示修訂完成後，將提報縣府教育處正式頒布施行。</p>
+          </div>
+        </div>
+
+        <div class="discuss-block">
+          <div class="discuss-topic"><span class="topic-icon">🗓️</span>三、下學期行動計畫研訂</div>
+          <div class="discuss-body">
+            <p>全體委員共同研訂 115 學年度下學期（115.03–115.07）行動計畫，聚焦三大主軸：</p>
+          </div>
+          <div class="prob-sol">
+            <div class="prob-box">
+              <div class="box-label">⚠️ 仍待突破的困境</div>
+              <div class="box-list">
+                <div class="box-item">教師數位增能覆蓋率不均，山區鄉鎮仍低於 40%</div>
+                <div class="box-item">Google Workspace 整合仍待縣府審查，平台串接延宕</div>
+                <div class="box-item">數位教材庫使用率偏低，教師搜尋習慣尚未養成</div>
+                <div class="box-item">STEAM 跨域課程推廣範圍有限，僅 2 所學校試行</div>
+                <div class="box-item">AI 使用指引尚未正式頒布，各校無所適從</div>
+              </div>
+            </div>
+            <div class="sol-box">
+              <div class="box-label">✅ 下學期優先行動</div>
+              <div class="box-list">
+                <div class="box-item">擴大「到校服務型」研習至 20 所學校，鎖定覆蓋空白區域</div>
+                <div class="box-item">持續追蹤縣府平台整合審查，爭取 6 月前完成</div>
+                <div class="box-item">辦理數位教材庫推廣研習，強化教師使用習慣</div>
+                <div class="box-item">擴大 STEAM 跨域課程至 10 所學校</div>
+                <div class="box-item">加速 AI 使用指引定稿，目標 4 月正式頒布</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="discuss-block">
+          <div class="discuss-topic"><span class="topic-icon">🎤</span>四、成果對外發表規劃</div>
+          <div class="discuss-body">
+            <p>林信全提議於 115 學年度末（7 月）辦理「苗栗縣資訊教育成果發表暨研討會」，對外展示六大策略推動成果，邀請縣府長官、跨縣市輔導團、學術界共同參與，形成跨域對話平台。</p>
+            <p>研討會規劃：上午半天為成果發表（各策略組呈現），下午半天為議題工作坊（聚焦 AI 教育治理與偏鄉數位平權兩大主題），預估參與人數 100–150 人。</p>
+            <p>全體委員對此提案表示贊同，授權林信全向縣府提案爭取場地與經費支持。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">✅ 決議事項</div>
+        <div class="resolution-list">
+          <div class="resolution-item">
+            <div class="res-num">1</div>
+            <div><div class="res-text">AI 教育使用指引修訂完成後，由林信全提報縣府教育處，目標 115.04.30 前正式頒布施行。</div><div class="res-owner">主責：龔任俠（修訂）/ 林信全（提報）</div></div>
+          </div>
+          <div class="resolution-item">
+            <div class="res-num">2</div>
+            <div><div class="res-text">下學期「到校服務型」研習計畫由林在營統籌排程，目標覆蓋 20 所學校，優先偏鄉與尚未接受輔導的學校。</div><div class="res-owner">主責：林在營</div></div>
+          </div>
+          <div class="resolution-item">
+            <div class="res-num">3</div>
+            <div><div class="res-text">STEAM 跨域課程推廣計畫由范運平、陳怡君共同主責，目標 115.06 前擴及 10 所學校，並蒐集質化成效資料。</div><div class="res-owner">主責：范運平、陳怡君</div></div>
+          </div>
+          <div class="resolution-item">
+            <div class="res-num">4</div>
+            <div><div class="res-text">115 學年度末成果研討會由林信全負責提案，張傳源負責籌備委員會組成，目標 115.07 舉辦，並邀請跨縣市輔導團交流。</div><div class="res-owner">主責：林信全（提案）/ 張傳源（籌備）</div></div>
+          </div>
+          <div class="resolution-item">
+            <div class="res-num">5</div>
+            <div><div class="res-text">學習數據儀表板擴大至 15 所學校使用，並蒐集校長滿意度回饋，作為工具持續優化依據。</div><div class="res-owner">主責：張傳源</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-head">📋 下學期工作追蹤</div>
+        <table class="action-table">
+          <thead><tr><th>工作項目</th><th>負責人</th><th>期限</th><th>狀態</th></tr></thead>
+          <tbody>
+            <tr><td>AI 使用指引定稿提報</td><td>龔任俠、林信全</td><td>04.30</td><td><span class="status-badge status-todo">待辦</span></td></tr>
+            <tr><td>到校服務型研習排程（20校）</td><td>林在營</td><td>03.31</td><td><span class="status-badge status-todo">待辦</span></td></tr>
+            <tr><td>STEAM 跨域課程推廣（10校）</td><td>范運平、陳怡君</td><td>06.30</td><td><span class="status-badge status-todo">待辦</span></td></tr>
+            <tr><td>數位教材庫推廣研習</td><td>莫順翔</td><td>05.31</td><td><span class="status-badge status-todo">待辦</span></td></tr>
+            <tr><td>儀表板擴大至 15 校</td><td>張傳源</td><td>05.31</td><td><span class="status-badge status-todo">待辦</span></td></tr>
+            <tr><td>成果研討會提案與籌備</td><td>林信全、張傳源</td><td>07.31</td><td><span class="status-badge status-todo">待辦</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:20px;margin-top:24px;text-align:center">
+        <div style="font-size:24px;margin-bottom:8px">🎉</div>
+        <div style="font-size:15px;font-weight:700;color:#16a34a;margin-bottom:6px">114–115 學年度上學期圓滿完成</div>
+        <div style="font-size:13px;color:#475569">五次會議共推動六大策略，培訓教師逾 400 人次，建置數位教材庫 38 份，完成偏鄉設備借調服務 6 校，學習數據儀表板完成 MVP 並進入試用。</div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /layout -->
+
+<script>
+function showMeeting(n) {
+  // Content
+  document.querySelectorAll('.meeting-page').forEach(p => p.classList.remove('active'));
+  document.getElementById('meeting-' + n).classList.add('active');
+  // Nav
+  document.querySelectorAll('.nav-item').forEach((el, i) => {
+    el.classList.toggle('active', i === n - 1);
+  });
+  // Scroll top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
