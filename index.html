@@ -121,6 +121,48 @@ body{font-family:'微軟正黑體','Microsoft JhengHei','PingFang TC',Arial,sans
 .next-text strong{display:block;font-size:15px;margin-top:2px}
 .next-arrow{color:#fff;font-size:22px}
 
+/* ── ROADMAP ── */
+.roadmap-intro{background:linear-gradient(135deg,#1e3a8a,#3730a3,#6d28d9);border-radius:16px;padding:24px 28px;margin-bottom:28px;color:#fff}
+.roadmap-intro h2{font-size:20px;font-weight:800;margin-bottom:6px}
+.roadmap-intro p{font-size:13px;color:#c7d2fe;line-height:1.7}
+.roadmap-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.roadmap-stat{background:rgba(255,255,255,.15);border-radius:10px;padding:12px;text-align:center}
+.roadmap-stat .val{font-size:22px;font-weight:800}
+.roadmap-stat .lbl{font-size:11px;color:#c7d2fe;margin-top:2px}
+
+.strategy-block{border:1px solid #e0e7ff;border-radius:16px;margin-bottom:20px;overflow:hidden}
+.strategy-header{padding:16px 20px;display:flex;align-items:center;gap:12px;cursor:pointer}
+.strategy-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.strategy-name{flex:1}
+.strategy-name h3{font-size:15px;font-weight:800;color:#1e293b}
+.strategy-name p{font-size:12px;color:#64748b;margin-top:2px}
+.strategy-overall{font-size:12px;font-weight:600;padding:4px 12px;border-radius:999px}
+
+.year-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:0;border-top:1px solid #e0e7ff}
+@media(max-width:800px){.year-grid{grid-template-columns:repeat(2,1fr)}}
+.year-col{padding:14px 12px;border-right:1px solid #e0e7ff;font-size:11px}
+.year-col:last-child{border-right:none}
+.year-label{font-weight:800;color:#fff;font-size:10px;letter-spacing:1px;padding:3px 8px;border-radius:6px;display:inline-block;margin-bottom:8px}
+.year-goals{display:flex;flex-direction:column;gap:5px}
+.year-goal{color:#475569;line-height:1.5;padding:5px 8px;background:#f8faff;border-radius:6px;border-left:3px solid transparent;font-size:11px}
+.year-kpi{font-size:10px;font-weight:700;margin-top:4px;padding:2px 6px;border-radius:4px;display:inline-block}
+
+.phase-bar{display:grid;grid-template-columns:repeat(6,1fr);background:#f8faff;border-top:1px solid #e0e7ff;padding:10px 0}
+.phase-cell{text-align:center;font-size:10px;padding:6px 4px;position:relative}
+.phase-cell::after{content:'';position:absolute;bottom:-1px;left:10%;right:10%;height:3px;border-radius:2px;background:var(--pc,#6366f1)}
+.phase-tag{display:inline-block;padding:2px 8px;border-radius:999px;font-weight:700;font-size:9px;letter-spacing:1px}
+
+.timeline-legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:20px;padding:14px 16px;background:#f8faff;border-radius:12px;border:1px solid #e0e7ff}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:#64748b}
+.legend-dot{width:12px;height:12px;border-radius:3px}
+
+.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+@media(max-width:700px){.summary-grid{grid-template-columns:1fr}}
+.summary-card{border-radius:12px;padding:16px;border:1px solid #e0e7ff}
+.summary-card .sc-num{font-size:26px;font-weight:800;line-height:1}
+.summary-card .sc-lbl{font-size:11px;margin-top:4px;color:#64748b}
+.summary-card .sc-desc{font-size:11px;margin-top:6px;color:#94a3b8;line-height:1.5}
+
 /* Print */
 @media print{
   .sidebar,.nav-item,.progress-wrap{display:none}
@@ -180,6 +222,13 @@ body{font-family:'微軟正黑體','Microsoft JhengHei','PingFang TC',Arial,sans
         <div class="nav-no" style="background:#7c3aed">第五次</div>
         <div class="nav-title">成果評估與下學期行動計畫</div>
         <div class="nav-loc">📍 山佳國小</div>
+      </div>
+
+      <div class="nav-item" style="--c:#0f766e" onclick="showMeeting(6)">
+        <div class="nav-date">114 → 119 學年度</div>
+        <div class="nav-no" style="background:#0f766e">總計畫</div>
+        <div class="nav-title">六大策略五年滾動計畫目標</div>
+        <div class="nav-loc">📊 策略藍圖</div>
       </div>
 
     </div>
@@ -890,19 +939,507 @@ body{font-family:'微軟正黑體','Microsoft JhengHei','PingFang TC',Arial,sans
       </div>
     </div>
 
+    <!-- ══════ 六大策略總計畫目標 ══════ -->
+    <div class="meeting-page" id="meeting-6">
+
+      <div class="meet-header">
+        <div class="meet-no" style="background:#0f766e">總計畫目標</div>
+        <div class="meet-title">六大策略五年滾動計畫目標（114–119學年度）</div>
+        <div class="meet-meta">
+          <div class="meta-chip"><span>📅</span>114學年度啟動 · 119學年度完成</div>
+          <div class="meta-chip"><span>🏫</span>涵蓋苗栗縣全縣國中小</div>
+          <div class="meta-chip"><span>🎯</span>六大策略全面推進</div>
+        </div>
+      </div>
+
+      <!-- 總覽 -->
+      <div class="roadmap-intro">
+        <h2>🚀 苗栗縣資訊教育五年推進藍圖</h2>
+        <p>以六大策略為核心架構，從114學年度試點紮根，逐步擴大至全縣規模，119學年度達成苗栗縣資訊教育全面深化目標，建立可持續的教師增能與數位學習生態系。</p>
+        <div class="roadmap-stats">
+          <div class="roadmap-stat"><div class="val">6</div><div class="lbl">核心推動策略</div></div>
+          <div class="roadmap-stat"><div class="val">6</div><div class="lbl">學年度滾動計畫</div></div>
+          <div class="roadmap-stat"><div class="val">100+</div><div class="lbl">目標受益學校</div></div>
+        </div>
+      </div>
+
+      <!-- 圖例 -->
+      <div class="timeline-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#dbeafe"></div>試點建立期（114）</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#bbf7d0"></div>深化推廣期（115-116）</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#fef3c7"></div>全面擴展期（117-118）</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ede9fe"></div>永續精進期（119）</div>
+        <div class="legend-item" style="margin-left:auto"><span style="font-size:10px;color:#94a3b8">KPI 數字為當學年度累積目標值</span></div>
+      </div>
+
+      <!-- 成果摘要 -->
+      <div class="section">
+        <div class="section-head">📊 五年總成果指標</div>
+        <div class="summary-grid">
+          <div class="summary-card" style="background:#eff6ff;border-color:#bfdbfe">
+            <div class="sc-num" style="color:#1d4ed8">3,000+</div>
+            <div class="sc-lbl">教師培訓總人次</div>
+            <div class="sc-desc">涵蓋全縣國中小教師，完成AI應用、數位融入、程式設計等多元增能</div>
+          </div>
+          <div class="summary-card" style="background:#f0fdf4;border-color:#bbf7d0">
+            <div class="sc-num" style="color:#16a34a">100%</div>
+            <div class="sc-lbl">偏鄉學校數位資源覆蓋率</div>
+            <div class="sc-desc">確保偏遠地區學校具備穩定網路、設備及教學支援，落實數位平權</div>
+          </div>
+          <div class="summary-card" style="background:#fdf4ff;border-color:#e9d5ff">
+            <div class="sc-num" style="color:#7e22ce">200+</div>
+            <div class="sc-lbl">數位教材與課程模組</div>
+            <div class="sc-desc">建置共享教材庫，包含AI、媒體素養、運算思維、跨領域STEAM課程</div>
+          </div>
+          <div class="summary-card" style="background:#fff7ed;border-color:#fed7aa">
+            <div class="sc-num" style="color:#c2410c">50+</div>
+            <div class="sc-lbl">到校服務場次/年</div>
+            <div class="sc-desc">輔導員定期到校，提供客製化教學輔導與技術支援服務</div>
+          </div>
+          <div class="summary-card" style="background:#f0fdfa;border-color:#99f6e4">
+            <div class="sc-num" style="color:#0f766e">30+</div>
+            <div class="sc-lbl">科技領導校長培訓</div>
+            <div class="sc-desc">強化校長數位治理能力，帶動學校整體資訊教育推動</div>
+          </div>
+          <div class="summary-card" style="background:#fefce8;border-color:#fef08a">
+            <div class="sc-num" style="color:#854d0e">80+</div>
+            <div class="sc-lbl">縣校學習數據儀表板</div>
+            <div class="sc-desc">建立全縣數位學習數據監控體系，支援校務決策與教學改善</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 策略一 -->
+      <div class="section">
+        <div class="section-head">🗓️ 六大策略年度目標對照表</div>
+
+        <div class="strategy-block">
+          <div class="strategy-header" style="background:#eff6ff">
+            <div class="strategy-icon" style="background:#1d4ed8">🤖</div>
+            <div class="strategy-name">
+              <h3>策略一：AI教育全面推動</h3>
+              <p>建立AI應用教育體系，從教師到學生全面培育AI素養</p>
+            </div>
+            <div class="strategy-overall" style="background:#dbeafe;color:#1d4ed8">五年累計 1,200 人次</div>
+          </div>
+          <div class="year-grid">
+            <div class="year-col" style="background:#eff6ff">
+              <div class="year-label" style="background:#1d4ed8">114學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#93c5fd">訂定AI教育推動指引草案</div>
+                <div class="year-goal" style="border-color:#93c5fd">完成縣級AI應用研習 3 場</div>
+                <div class="year-goal" style="border-color:#93c5fd">培訓種子教師 20 人</div>
+              </div>
+              <div class="year-kpi" style="background:#dbeafe;color:#1d4ed8">▶ 150人次</div>
+            </div>
+            <div class="year-col" style="background:#f0fdf4">
+              <div class="year-label" style="background:#16a34a">115學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#86efac">發布正式AI教育指引</div>
+                <div class="year-goal" style="border-color:#86efac">推廣至 30 所學校辦理研習</div>
+                <div class="year-goal" style="border-color:#86efac">建置AI課程示範教案 10 份</div>
+              </div>
+              <div class="year-kpi" style="background:#dcfce7;color:#16a34a">▶ 300人次</div>
+            </div>
+            <div class="year-col" style="background:#fefce8">
+              <div class="year-label" style="background:#ca8a04">116學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#fde047">辦理AI教育跨縣交流研討</div>
+                <div class="year-goal" style="border-color:#fde047">AI融入各領域教學課程化</div>
+                <div class="year-goal" style="border-color:#fde047">學生AI素養評量工具建置</div>
+              </div>
+              <div class="year-kpi" style="background:#fef9c3;color:#ca8a04">▶ 500人次</div>
+            </div>
+            <div class="year-col" style="background:#fdf4ff">
+              <div class="year-label" style="background:#7e22ce">117學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#d8b4fe">全縣AI素養普測與分析</div>
+                <div class="year-goal" style="border-color:#d8b4fe">AI創客競賽辦理</div>
+                <div class="year-goal" style="border-color:#d8b4fe">建立AI教育典範學校 5 所</div>
+              </div>
+              <div class="year-kpi" style="background:#ede9fe;color:#7e22ce">▶ 750人次</div>
+            </div>
+            <div class="year-col" style="background:#fff7ed">
+              <div class="year-label" style="background:#c2410c">118學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#fdba74">AI教育納入學校年度計畫</div>
+                <div class="year-goal" style="border-color:#fdba74">縣內外參訪交流擴大</div>
+                <div class="year-goal" style="border-color:#fdba74">AI教師認證體系建立</div>
+              </div>
+              <div class="year-kpi" style="background:#ffedd5;color:#c2410c">▶ 1,000人次</div>
+            </div>
+            <div class="year-col" style="background:#f0fdfa">
+              <div class="year-label" style="background:#0f766e">119學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#5eead4">全縣AI教育成果發表大會</div>
+                <div class="year-goal" style="border-color:#5eead4">建立永續推動機制與SOP</div>
+                <div class="year-goal" style="border-color:#5eead4">發布五年AI教育成果報告</div>
+              </div>
+              <div class="year-kpi" style="background:#ccfbf1;color:#0f766e">▶ 1,200人次</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 策略二 -->
+        <div class="strategy-block">
+          <div class="strategy-header" style="background:#ecfdf5">
+            <div class="strategy-icon" style="background:#16a34a">👩‍🏫</div>
+            <div class="strategy-name">
+              <h3>策略二：教師數位增能與認證</h3>
+              <p>提升全縣教師數位教學能力，建立多層次增能與認證機制</p>
+            </div>
+            <div class="strategy-overall" style="background:#dcfce7;color:#16a34a">五年累計 3,000 人次</div>
+          </div>
+          <div class="year-grid">
+            <div class="year-col" style="background:#eff6ff">
+              <div class="year-label" style="background:#1d4ed8">114學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#93c5fd">盤點教師數位能力現況</div>
+                <div class="year-goal" style="border-color:#93c5fd">辦理數位學習研習 20 場</div>
+                <div class="year-goal" style="border-color:#93c5fd">建立增能研習需求回饋機制</div>
+              </div>
+              <div class="year-kpi" style="background:#dbeafe;color:#1d4ed8">▶ 400人次</div>
+            </div>
+            <div class="year-col" style="background:#f0fdf4">
+              <div class="year-label" style="background:#16a34a">115學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#86efac">分級研習課程正式化</div>
+                <div class="year-goal" style="border-color:#86efac">辦理到校服務研習 30 場</div>
+                <div class="year-goal" style="border-color:#86efac">初階數位認證教師達 50 人</div>
+              </div>
+              <div class="year-kpi" style="background:#dcfce7;color:#16a34a">▶ 800人次</div>
+            </div>
+            <div class="year-col" style="background:#fefce8">
+              <div class="year-label" style="background:#ca8a04">116學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#fde047">進階認證培訓課程啟動</div>
+                <div class="year-goal" style="border-color:#fde047">縣內外教師交流觀摩</div>
+                <div class="year-goal" style="border-color:#fde047">教師自主學習社群擴大</div>
+              </div>
+              <div class="year-kpi" style="background:#fef9c3;color:#ca8a04">▶ 1,400人次</div>
+            </div>
+            <div class="year-col" style="background:#fdf4ff">
+              <div class="year-label" style="background:#7e22ce">117學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#d8b4fe">進階認證教師達 100 人</div>
+                <div class="year-goal" style="border-color:#d8b4fe">辦理跨縣市交流研討</div>
+                <div class="year-goal" style="border-color:#d8b4fe">建立教師數位檔案系統</div>
+              </div>
+              <div class="year-kpi" style="background:#ede9fe;color:#7e22ce">▶ 2,000人次</div>
+            </div>
+            <div class="year-col" style="background:#fff7ed">
+              <div class="year-label" style="background:#c2410c">118學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#fdba74">高階師資培訓課程建立</div>
+                <div class="year-goal" style="border-color:#fdba74">教師增能成效追蹤研究</div>
+                <div class="year-goal" style="border-color:#fdba74">典範教師分享機制建立</div>
+              </div>
+              <div class="year-kpi" style="background:#ffedd5;color:#c2410c">▶ 2,600人次</div>
+            </div>
+            <div class="year-col" style="background:#f0fdfa">
+              <div class="year-label" style="background:#0f766e">119學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#5eead4">全縣教師數位能力普及化</div>
+                <div class="year-goal" style="border-color:#5eead4">認證制度移交縣府永續</div>
+                <div class="year-goal" style="border-color:#5eead4">發布五年增能成效報告</div>
+              </div>
+              <div class="year-kpi" style="background:#ccfbf1;color:#0f766e">▶ 3,000人次</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 策略三 -->
+        <div class="strategy-block">
+          <div class="strategy-header" style="background:#fff7ed">
+            <div class="strategy-icon" style="background:#c2410c">📚</div>
+            <div class="strategy-name">
+              <h3>策略三：課程研發與教學創新</h3>
+              <p>開發科技領域優質課程，推動跨領域STEAM與運算思維融入教學</p>
+            </div>
+            <div class="strategy-overall" style="background:#ffedd5;color:#c2410c">五年累計 200 份教材</div>
+          </div>
+          <div class="year-grid">
+            <div class="year-col" style="background:#eff6ff">
+              <div class="year-label" style="background:#1d4ed8">114學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#93c5fd">建置數位教材共享平台</div>
+                <div class="year-goal" style="border-color:#93c5fd">徵集優良教案 20 份</div>
+                <div class="year-goal" style="border-color:#93c5fd">辦理教案競賽與發表</div>
+              </div>
+              <div class="year-kpi" style="background:#dbeafe;color:#1d4ed8">▶ 30份</div>
+            </div>
+            <div class="year-col" style="background:#f0fdf4">
+              <div class="year-label" style="background:#16a34a">115學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#86efac">STEAM跨域課程模組開發</div>
+                <div class="year-goal" style="border-color:#86efac">推廣至 20 所試點學校</div>
+                <div class="year-goal" style="border-color:#86efac">建立課程審查機制</div>
+              </div>
+              <div class="year-kpi" style="background:#dcfce7;color:#16a34a">▶ 60份</div>
+            </div>
+            <div class="year-col" style="background:#fefce8">
+              <div class="year-label" style="background:#ca8a04">116學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#fde047">運算思維融入各科課程</div>
+                <div class="year-goal" style="border-color:#fde047">媒體素養教材系列完整化</div>
+                <div class="year-goal" style="border-color:#fde047">辦理創新教學觀摩 5 場</div>
+              </div>
+              <div class="year-kpi" style="background:#fef9c3;color:#ca8a04">▶ 100份</div>
+            </div>
+            <div class="year-col" style="background:#fdf4ff">
+              <div class="year-label" style="background:#7e22ce">117學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#d8b4fe">建立學校本位課程指引</div>
+                <div class="year-goal" style="border-color:#d8b4fe">課程資源全縣開放共享</div>
+                <div class="year-goal" style="border-color:#d8b4fe">辦理全縣教學創新博覽會</div>
+              </div>
+              <div class="year-kpi" style="background:#ede9fe;color:#7e22ce">▶ 140份</div>
+            </div>
+            <div class="year-col" style="background:#fff7ed">
+              <div class="year-label" style="background:#c2410c">118學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#fdba74">課程縱向銜接（國小→國中）</div>
+                <div class="year-goal" style="border-color:#fdba74">外縣市課程交流合作</div>
+                <div class="year-goal" style="border-color:#fdba74">學生學習成效追蹤建立</div>
+              </div>
+              <div class="year-kpi" style="background:#ffedd5;color:#c2410c">▶ 170份</div>
+            </div>
+            <div class="year-col" style="background:#f0fdfa">
+              <div class="year-label" style="background:#0f766e">119學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#5eead4">完整課程資料庫移交維護</div>
+                <div class="year-goal" style="border-color:#5eead4">申請國家教材認證</div>
+                <div class="year-goal" style="border-color:#5eead4">出版縣本位課程成果專輯</div>
+              </div>
+              <div class="year-kpi" style="background:#ccfbf1;color:#0f766e">▶ 200份</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 策略四 -->
+        <div class="strategy-block">
+          <div class="strategy-header" style="background:#fdf4ff">
+            <div class="strategy-icon" style="background:#7e22ce">🖥️</div>
+            <div class="strategy-name">
+              <h3>策略四：平台整合與資源共享</h3>
+              <p>整合多元教學平台，建立縣級資源共享生態系統</p>
+            </div>
+            <div class="strategy-overall" style="background:#ede9fe;color:#7e22ce">五年建置平台 5 個</div>
+          </div>
+          <div class="year-grid">
+            <div class="year-col" style="background:#eff6ff">
+              <div class="year-label" style="background:#1d4ed8">114學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#93c5fd">盤點現有平台使用狀況</div>
+                <div class="year-goal" style="border-color:#93c5fd">均一、Google等平台推廣</div>
+                <div class="year-goal" style="border-color:#93c5fd">辦理平台操作研習 10 場</div>
+              </div>
+              <div class="year-kpi" style="background:#dbeafe;color:#1d4ed8">▶ 30校導入</div>
+            </div>
+            <div class="year-col" style="background:#f0fdf4">
+              <div class="year-label" style="background:#16a34a">115學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#86efac">建立縣級教材共享平台</div>
+                <div class="year-goal" style="border-color:#86efac">推廣 LoiLoNote 至 20 校</div>
+                <div class="year-goal" style="border-color:#86efac">平台使用率監控機制建立</div>
+              </div>
+              <div class="year-kpi" style="background:#dcfce7;color:#16a34a">▶ 50校導入</div>
+            </div>
+            <div class="year-col" style="background:#fefce8">
+              <div class="year-label" style="background:#ca8a04">116學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#fde047">整合單一登入（SSO）機制</div>
+                <div class="year-goal" style="border-color:#fde047">建立跨平台資源目錄</div>
+                <div class="year-goal" style="border-color:#fde047">辦理平台認證教師 50 人</div>
+              </div>
+              <div class="year-kpi" style="background:#fef9c3;color:#ca8a04">▶ 65校導入</div>
+            </div>
+            <div class="year-col" style="background:#fdf4ff">
+              <div class="year-label" style="background:#7e22ce">117學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#d8b4fe">平台資源全縣開放共享</div>
+                <div class="year-goal" style="border-color:#d8b4fe">建立縣級雲端備課中心</div>
+                <div class="year-goal" style="border-color:#d8b4fe">家長數位學習入口建置</div>
+              </div>
+              <div class="year-kpi" style="background:#ede9fe;color:#7e22ce">▶ 80校導入</div>
+            </div>
+            <div class="year-col" style="background:#fff7ed">
+              <div class="year-label" style="background:#c2410c">118學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#fdba74">平台效益評估與優化</div>
+                <div class="year-goal" style="border-color:#fdba74">跨縣市平台交流合作</div>
+                <div class="year-goal" style="border-color:#fdba74">建立平台永續維運模式</div>
+              </div>
+              <div class="year-kpi" style="background:#ffedd5;color:#c2410c">▶ 90校導入</div>
+            </div>
+            <div class="year-col" style="background:#f0fdfa">
+              <div class="year-label" style="background:#0f766e">119學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#5eead4">平台整合成果全面評估</div>
+                <div class="year-goal" style="border-color:#5eead4">移交縣府資訊中心維護</div>
+                <div class="year-goal" style="border-color:#5eead4">發布平台使用成效白皮書</div>
+              </div>
+              <div class="year-kpi" style="background:#ccfbf1;color:#0f766e">▶ 100校導入</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 策略五 -->
+        <div class="strategy-block">
+          <div class="strategy-header" style="background:#fff1f2">
+            <div class="strategy-icon" style="background:#be123c">🌐</div>
+            <div class="strategy-name">
+              <h3>策略五：數位平權與偏鄉支援</h3>
+              <p>縮短城鄉數位落差，確保偏鄉學生享有同等數位學習資源</p>
+            </div>
+            <div class="strategy-overall" style="background:#fce7f3;color:#be123c">五年覆蓋 100% 偏鄉校</div>
+          </div>
+          <div class="year-grid">
+            <div class="year-col" style="background:#eff6ff">
+              <div class="year-label" style="background:#1d4ed8">114學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#93c5fd">盤點偏鄉學校數位落差</div>
+                <div class="year-goal" style="border-color:#93c5fd">建立設備借調服務機制</div>
+                <div class="year-goal" style="border-color:#93c5fd">完成 6 所偏鄉校設備支援</div>
+              </div>
+              <div class="year-kpi" style="background:#dbeafe;color:#1d4ed8">▶ 6校支援</div>
+            </div>
+            <div class="year-col" style="background:#f0fdf4">
+              <div class="year-label" style="background:#16a34a">115學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#86efac">偏鄉學校到校輔導 15 校</div>
+                <div class="year-goal" style="border-color:#86efac">網路品質改善提案送縣府</div>
+                <div class="year-goal" style="border-color:#86efac">學生數位學習包試辦計畫</div>
+              </div>
+              <div class="year-kpi" style="background:#dcfce7;color:#16a34a">▶ 15校支援</div>
+            </div>
+            <div class="year-col" style="background:#fefce8">
+              <div class="year-label" style="background:#ca8a04">116學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#fde047">偏鄉數位師資駐點計畫</div>
+                <div class="year-goal" style="border-color:#fde047">家長數位使用培力課程</div>
+                <div class="year-goal" style="border-color:#fde047">建立偏鄉數位資源補充站</div>
+              </div>
+              <div class="year-kpi" style="background:#fef9c3;color:#ca8a04">▶ 25校支援</div>
+            </div>
+            <div class="year-col" style="background:#fdf4ff">
+              <div class="year-label" style="background:#7e22ce">117學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#d8b4fe">偏鄉AI教育深入計畫</div>
+                <div class="year-goal" style="border-color:#d8b4fe">建立學生數位使用監測</div>
+                <div class="year-goal" style="border-color:#d8b4fe">爭取教育部專案補助</div>
+              </div>
+              <div class="year-kpi" style="background:#ede9fe;color:#7e22ce">▶ 35校支援</div>
+            </div>
+            <div class="year-col" style="background:#fff7ed">
+              <div class="year-label" style="background:#c2410c">118學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#fdba74">全縣偏鄉校數位覆蓋普查</div>
+                <div class="year-goal" style="border-color:#fdba74">縮短落差成效評估研究</div>
+                <div class="year-goal" style="border-color:#fdba74">建立永續偏鄉支援機制</div>
+              </div>
+              <div class="year-kpi" style="background:#ffedd5;color:#c2410c">▶ 45校支援</div>
+            </div>
+            <div class="year-col" style="background:#f0fdfa">
+              <div class="year-label" style="background:#0f766e">119學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#5eead4">全縣偏鄉數位平權達成</div>
+                <div class="year-goal" style="border-color:#5eead4">發布數位平權成果報告</div>
+                <div class="year-goal" style="border-color:#5eead4">建立長期追蹤制度</div>
+              </div>
+              <div class="year-kpi" style="background:#ccfbf1;color:#0f766e">▶ 全縣覆蓋</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 策略六 -->
+        <div class="strategy-block">
+          <div class="strategy-header" style="background:#ecfdf5">
+            <div class="strategy-icon" style="background:#0f766e">📊</div>
+            <div class="strategy-name">
+              <h3>策略六：數據治理與科技領導</h3>
+              <p>建立學習數據分析機制，強化校長科技治校能力</p>
+            </div>
+            <div class="strategy-overall" style="background:#ccfbf1;color:#0f766e">五年建置 80 校儀表板</div>
+          </div>
+          <div class="year-grid">
+            <div class="year-col" style="background:#eff6ff">
+              <div class="year-label" style="background:#1d4ed8">114學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#93c5fd">學習數據儀表板MVP建置</div>
+                <div class="year-goal" style="border-color:#93c5fd">試點學校 5 所導入</div>
+                <div class="year-goal" style="border-color:#93c5fd">校長科技領導工作坊 2 場</div>
+              </div>
+              <div class="year-kpi" style="background:#dbeafe;color:#1d4ed8">▶ 5校儀表板</div>
+            </div>
+            <div class="year-col" style="background:#f0fdf4">
+              <div class="year-label" style="background:#16a34a">115學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#86efac">儀表板功能優化擴充</div>
+                <div class="year-goal" style="border-color:#86efac">推廣至 20 所學校</div>
+                <div class="year-goal" style="border-color:#86efac">辦理校長數位治校研習 3 場</div>
+              </div>
+              <div class="year-kpi" style="background:#dcfce7;color:#16a34a">▶ 20校儀表板</div>
+            </div>
+            <div class="year-col" style="background:#fefce8">
+              <div class="year-label" style="background:#ca8a04">116學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#fde047">縣級學習數據整合平台</div>
+                <div class="year-goal" style="border-color:#fde047">數據倫理與隱私規範訂定</div>
+                <div class="year-goal" style="border-color:#fde047">校長科技領導認證啟動</div>
+              </div>
+              <div class="year-kpi" style="background:#fef9c3;color:#ca8a04">▶ 40校儀表板</div>
+            </div>
+            <div class="year-col" style="background:#fdf4ff">
+              <div class="year-label" style="background:#7e22ce">117學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#d8b4fe">AI輔助學習分析導入</div>
+                <div class="year-goal" style="border-color:#d8b4fe">數據驅動教學改善試點</div>
+                <div class="year-goal" style="border-color:#d8b4fe">科技領導認證校長 20 人</div>
+              </div>
+              <div class="year-kpi" style="background:#ede9fe;color:#7e22ce">▶ 55校儀表板</div>
+            </div>
+            <div class="year-col" style="background:#fff7ed">
+              <div class="year-label" style="background:#c2410c">118學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#fdba74">全縣學習數據治理白皮書</div>
+                <div class="year-goal" style="border-color:#fdba74">數據應用成效評估研究</div>
+                <div class="year-goal" style="border-color:#fdba74">建立數據共享開放標準</div>
+              </div>
+              <div class="year-kpi" style="background:#ffedd5;color:#c2410c">▶ 70校儀表板</div>
+            </div>
+            <div class="year-col" style="background:#f0fdfa">
+              <div class="year-label" style="background:#0f766e">119學年</div>
+              <div class="year-goals">
+                <div class="year-goal" style="border-color:#5eead4">全縣 80 校儀表板完成</div>
+                <div class="year-goal" style="border-color:#5eead4">移交縣府資訊單位維護</div>
+                <div class="year-goal" style="border-color:#5eead4">發布數據治理五年成果</div>
+              </div>
+              <div class="year-kpi" style="background:#ccfbf1;color:#0f766e">▶ 80校儀表板</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 結語 -->
+      <div style="background:linear-gradient(135deg,#0f766e,#0891b2);border-radius:16px;padding:24px 28px;margin-top:8px;text-align:center">
+        <div style="font-size:28px;margin-bottom:10px">🏆</div>
+        <div style="font-size:16px;font-weight:800;color:#fff;margin-bottom:8px">119學年度總目標：苗栗縣資訊教育全面深化</div>
+        <div style="font-size:13px;color:#cffafe;line-height:1.8">五年計畫以「AI教育推動 · 教師數位增能 · 課程研發創新 · 平台資源整合 · 數位平權落實 · 數據治理精進」六大策略為核心，<br>建立苗栗縣可持續的資訊教育生態系，達成城鄉均等、教學創新、數據驅動的數位學習願景。</div>
+      </div>
+
+    </div><!-- /meeting-6 -->
+
   </div><!-- /content -->
 </div><!-- /layout -->
 
 <script>
 function showMeeting(n) {
-  // Content
   document.querySelectorAll('.meeting-page').forEach(p => p.classList.remove('active'));
   document.getElementById('meeting-' + n).classList.add('active');
-  // Nav
   document.querySelectorAll('.nav-item').forEach((el, i) => {
     el.classList.toggle('active', i === n - 1);
   });
-  // Scroll top
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
